@@ -26,6 +26,7 @@ public class WeatherProducer {
     private final Random random = new Random();
     private final List<String> cities = List.of("Москва", "Рязань", "Санкт-Петербург", "Магадан", "Тюмень", "Чукотка АО", "Краснодар");
     private final List<String> conditions = List.of("солнечно", "облачно", "дождь");
+    private int day = 0;
 
 
     @Scheduled(fixedRate = 2, timeUnit = TimeUnit.SECONDS)
@@ -33,15 +34,19 @@ public class WeatherProducer {
         String city = cities.get(random.nextInt(cities.size()));
         String condition = conditions.get(random.nextInt(conditions.size()));
 
+        if (day == 7) day = 0;
+
         double temperature = random.nextDouble() * 35.0;
 
-        LocalDateTime weatherDateTime = LocalDateTime.now()
-                .minusDays(random.nextInt(7))
-                .minusHours(random.nextInt(24))
+        LocalDateTime msgDateTime = LocalDateTime.now();
+
+        LocalDateTime weatherDateTime = msgDateTime
+                .plusDays(day)
+                .minusHours(random.nextInt(msgDateTime.getHour()))
                 .minusMinutes(random.nextInt(60))
                 .minusSeconds(random.nextInt(60));
 
-        LocalDateTime msgDateTime = LocalDateTime.now();
+        day++;
 
         WeatherData data = new WeatherData(city, Math.round(temperature * 10.0) / 10.0, condition, weatherDateTime, msgDateTime);
 
