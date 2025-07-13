@@ -46,7 +46,7 @@ public class WeatherAnalyticsServiceImpl implements WeatherAnalyticsService {
                 .map(entry -> {
                     long rainyDays = entry.getValue().stream()
                             .filter(data -> "дождь".equals(data.condition()))
-                            .map(WeatherData::weatherDate)
+                            .map(WeatherData::weatherDateTime)
                             .distinct()
                             .count();
                     return Map.entry(entry.getKey(), rainyDays);
@@ -69,7 +69,7 @@ public class WeatherAnalyticsServiceImpl implements WeatherAnalyticsService {
                 .max(Comparator.comparingDouble(WeatherData::temperature));
 
         hottest.ifPresent(data -> log.info("Аналитика: Самая высокая температура - {}°C в городе {} ({})",
-                data.temperature(), data.city(), data.weatherDate()));
+                data.temperature(), data.city(), data.weatherDateTime()));
     }
 
     @Override

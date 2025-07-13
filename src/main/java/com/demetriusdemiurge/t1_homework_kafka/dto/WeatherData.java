@@ -1,11 +1,11 @@
 package com.demetriusdemiurge.t1_homework_kafka.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record WeatherData(
         String city,
         double temperature,
         String condition,
-        LocalDate weatherDate,
-        LocalDate msgDate
+        LocalDateTime weatherDateTime,
+        LocalDateTime msgDateTime
 ) {}

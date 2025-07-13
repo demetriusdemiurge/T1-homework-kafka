@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -34,11 +35,15 @@ public class WeatherProducer {
 
         double temperature = random.nextDouble() * 35.0;
 
-        LocalDate weatherDate = LocalDate.now().minusDays(random.nextInt(7));
+        LocalDateTime weatherDateTime = LocalDateTime.now()
+                .minusDays(random.nextInt(7))
+                .minusHours(random.nextInt(24))
+                .minusMinutes(random.nextInt(60))
+                .minusSeconds(random.nextInt(60));
 
-        LocalDate msgDate = LocalDate.now();
+        LocalDateTime msgDateTime = LocalDateTime.now();
 
-        WeatherData data = new WeatherData(city, Math.round(temperature * 10.0) / 10.0, condition, weatherDate, msgDate);
+        WeatherData data = new WeatherData(city, Math.round(temperature * 10.0) / 10.0, condition, weatherDateTime, msgDateTime);
 
         log.info("Отправка данных о погоде: {}", data);
         kafkaTemplate.send(weatherTopic, data.city(), data);
