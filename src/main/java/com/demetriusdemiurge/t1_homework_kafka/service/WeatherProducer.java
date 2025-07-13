@@ -41,7 +41,7 @@ public class WeatherProducer {
         LocalDateTime msgDateTime = LocalDateTime.now();
 
         LocalDateTime weatherDateTime = msgDateTime
-                .plusDays(day)
+                .plusDays(day - 7)
                 .minusHours(random.nextInt(msgDateTime.getHour()))
                 .minusMinutes(random.nextInt(60))
                 .minusSeconds(random.nextInt(60));
